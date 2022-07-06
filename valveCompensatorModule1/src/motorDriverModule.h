@@ -13,6 +13,7 @@
 #define bridge_pin_1 6//pin sentido del puento
 #define bridge_pin_2 8
 
-void configureDriverModule();
+void calibrateValve();
+void configureDriverOutputs();
 long PWMcontrolActionCalc (int closeAngle, uint8_t controlState);
 void openValve();

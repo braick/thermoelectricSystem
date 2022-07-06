@@ -58,18 +58,9 @@ bool enablePIDCont = false;
 ////////////////////////////////////////////////
 
 
-
-void configureDriverModule()
+void calibrateValve()
 {
-    pinMode(PWM_pin, OUTPUT);
-    pinMode(bridge_pin_1, OUTPUT);
-    pinMode(bridge_pin_2, OUTPUT);
-    
-    digitalWrite(bridge_pin_1, rotation_sense);
-    digitalWrite(bridge_pin_2, !rotation_sense);
 
-    //calibration
-    
     analogWrite(PWM_pin, 110);
     delay(1000);
     analogWrite(PWM_pin, 120);
@@ -113,9 +104,9 @@ void configureDriverModule()
     
     Serial.println(minSensorValue);
     Serial.println(maxSensorValue);
-}
 
-void openValve()
+}
+void configureDriverOutputs()
 {
     pinMode(PWM_pin, OUTPUT);
     pinMode(bridge_pin_1, OUTPUT);
@@ -123,6 +114,10 @@ void openValve()
     
     digitalWrite(bridge_pin_1, rotation_sense);
     digitalWrite(bridge_pin_2, !rotation_sense);
+}
+
+void openValve()
+{
     analogWrite(PWM_pin,0);
 }
 /**

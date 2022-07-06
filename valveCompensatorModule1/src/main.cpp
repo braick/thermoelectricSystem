@@ -1,37 +1,39 @@
 #include <Arduino.h>
-#include "definitions.h"
+//#include "definitions.h"
 #include "motorDriverModule.h"
 #include "canBusCom.h"
 
-uint8_t state = 0;
+valveControlSM SM = stop;
 bool calibrationFlag = true;
 unsigned long T1=0, T0=0;
 
-float setPt = 0;
-
+int setPt = 0;
 long sensorV = 0;
 void setup() 
 {
   Serial.begin(9600);
   configurecanModule();
-  configureDriverModule();
+  configureDriverOutputs();
+  //configureDriverModule();
 }
 
 void loop() 
 {
   
-  state = getCanMessage();
+  getCanMessage();
 
-  switch (state)
+  switch (SM)
   {
   case stop:
   {
+    openValve();
     break;
   }
   case calibrate:
   {
-
+    calibrateValve();
     calibrationFlag = true;
+    SM=stop;
     break;
   }
   case monitorin:
@@ -42,6 +44,7 @@ void loop()
   {
     if (!calibrationFlag)
     {
+      SM = calibrate;
       break;
     }
     
@@ -51,14 +54,14 @@ void loop()
       T0 = T1;
 
       setPt = constrain(setPt, 0, 70);
-      sensorV =  PWMcontrolActionCalc ((int)setPt,0);
+      sensorV =  PWMcontrolActionCalc (setPt,0);
       
     }
     
     break;
   }
   default:
-    state = 0;
+    SM = stop;
     break;
   }
 }
