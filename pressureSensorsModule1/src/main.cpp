@@ -37,6 +37,5 @@ void loop()
   if (cmd!=255)
   {
     sendCanMessage(pressureSensors[cmd].measuresMean,cmd);
-  }
-  
+  }  
 }

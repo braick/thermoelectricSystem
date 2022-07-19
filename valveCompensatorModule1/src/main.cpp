@@ -3,7 +3,7 @@
 #include "motorDriverModule.h"
 #include "canBusCom.h"
 
-valveControlSM SM = stop;
+valveControlSM SM = calibrate;
 bool calibrationFlag = true;
 unsigned long T1=0, T0=0;
 
@@ -33,7 +33,7 @@ void loop()
   {
     calibrateValve();
     calibrationFlag = true;
-    SM=stop;
+    SM=positionControl;
     break;
   }
   case monitorin:

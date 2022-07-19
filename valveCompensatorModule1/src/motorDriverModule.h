@@ -11,7 +11,7 @@
 
 #define PWM_pin  5 //pin para el pwm del motor
 #define bridge_pin_1 6//pin sentido del puento
-#define bridge_pin_2 8
+#define bridge_pin_2 7
 
 void calibrateValve();
 void configureDriverOutputs();

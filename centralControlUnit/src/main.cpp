@@ -1,9 +1,18 @@
 #include <Arduino.h>
+#include "tasks.h"
+
+
 
 void setup() {
-  // put your setup code here, to run once:
+  Serial.begin(115200);
+  //inciciar las tareas
+  intializeTasks1();
+  
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void loop() 
+{
+  Serial.println("Void loop");
+  //suspender tarea del loop de arduino
+  vTaskSuspend(NULL);
 }
