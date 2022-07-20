@@ -102,8 +102,8 @@ void calibrateValve()
     
     maxSensorValue = (long)(rawmaxSensorValue /100.0);
     
-    Serial.println(minSensorValue);
-    Serial.println(maxSensorValue);
+    //Serial.println(minSensorValue);
+    //Serial.println(maxSensorValue);
 
 }
 void configureDriverOutputs()

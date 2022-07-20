@@ -11,7 +11,7 @@ int setPt = 0;
 long sensorV = 0;
 void setup() 
 {
-  Serial.begin(9600);
+  //Serial.begin(9600);
   configurecanModule();
   configureDriverOutputs();
   //configureDriverModule();
@@ -26,6 +26,7 @@ void loop()
   {
   case stop:
   {
+    setPt = 0;
     openValve();
     break;
   }
@@ -33,7 +34,7 @@ void loop()
   {
     calibrateValve();
     calibrationFlag = true;
-    SM=positionControl;
+    SM=stop;
     break;
   }
   case monitorin:

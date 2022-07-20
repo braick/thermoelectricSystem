@@ -41,7 +41,7 @@ void getCanMessage()
 {
 if (mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) 
   {
-    Serial.println("Message recived");
+    //Serial.println("Message recived");
     uint8_t cmd = canMsgR.can_id & 0xff;
 
     switch (cmd)

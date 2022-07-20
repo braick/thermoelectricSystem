@@ -1,7 +1,5 @@
 #include <Arduino.h>
 #include <WiFi.h>
-//#include "dataStructures.h"
-//#include "definitions.h"
 #include "canBusCom.h"
 
 SystemSensors systemSensorsTCP;
@@ -19,10 +17,12 @@ void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuf
     case valveCompDir1:
     {
         ptr++;
+        uint8_t valveCMD = (uint8_t)*ptr;
+        ptr++;
         int sptOUT = (int)*ptr;
         byte spFrameOUT[8];
         memcpy(spFrameOUT,&sptOUT,sizeof(int));
-        sendCANMsg(CCUDir,valveCompDir1,5,spFrameOUT);
+        sendCANMsg(CCUDir,valveCompDir1,valveCMD,spFrameOUT);
         break;
     }
     case valveCompDir2:
