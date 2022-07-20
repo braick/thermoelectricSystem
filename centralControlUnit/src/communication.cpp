@@ -11,18 +11,28 @@ void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuf
     memcpy(outputBuffer,numOfBytesToSend,sizeof(uint8_t));
     outputBuffer++;
     byte *ptr = &inputBuffer[0];
-
+    byte emptyBytes[8] = {0};
     switch (*ptr)
     {
     case valveCompDir1:
     {
         ptr++;
         uint8_t valveCMD = (uint8_t)*ptr;
-        ptr++;
-        int sptOUT = (int)*ptr;
-        byte spFrameOUT[8];
-        memcpy(spFrameOUT,&sptOUT,sizeof(int));
-        sendCANMsg(CCUDir,valveCompDir1,valveCMD,spFrameOUT);
+        if (*ptr==modSetPtValve)
+        {
+          ptr++;
+          int sptOUT = (int)*ptr;
+          byte spFrameOUT[8];
+          memcpy(spFrameOUT,&sptOUT,sizeof(int));
+          sendCANMsg(CCUDir,valveCompDir1,valveCMD,spFrameOUT);
+        }
+        else
+        {
+          sendCANMsg(CCUDir,valveCompDir1,valveCMD,emptyBytes);
+        }
+        
+        
+        
         break;
     }
     case valveCompDir2:
@@ -55,39 +65,6 @@ void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuf
             *outputBuffer = nothigToRead;
             break;
         }
-        /*
-        systemSensorsTCP.pressureArray[0]= 1.1;
-        systemSensorsTCP.pressureArray[1]= 1.2;
-        systemSensorsTCP.pressureArray[2]= 1.3;
-        systemSensorsTCP.pressureArray[3]= 1.4;
-        systemSensorsTCP.pressureArray[4]= 1.5;
-        systemSensorsTCP.pressureArray[5]= 1.6;
-        systemSensorsTCP.pressureArray[6]= 1.7;
-        systemSensorsTCP.pressureArray[7]= 1.8;
-
-        systemSensorsTCP.tempArrayMod1[0]= 2.1;
-        systemSensorsTCP.tempArrayMod1[1]= 2.2;
-        systemSensorsTCP.tempArrayMod1[2]= 2.3;
-        systemSensorsTCP.tempArrayMod1[3]= 2.4;
-        systemSensorsTCP.tempArrayMod1[4]= 2.5;
-        systemSensorsTCP.tempArrayMod1[5]= 2.6;
-        systemSensorsTCP.tempArrayMod1[6]= 2.7;
-        systemSensorsTCP.tempArrayMod1[7]= 2.8;
-
-        systemSensorsTCP.tempArrayMod2[0]= 3.1;
-        systemSensorsTCP.tempArrayMod2[1]= 3.2;
-        systemSensorsTCP.tempArrayMod2[2]= 3.3;
-        systemSensorsTCP.tempArrayMod2[3]= 3.4;
-        systemSensorsTCP.tempArrayMod2[4]= 3.5;
-        systemSensorsTCP.tempArrayMod2[5]= 3.6;
-        systemSensorsTCP.tempArrayMod2[6]= 3.7;
-        systemSensorsTCP.tempArrayMod2[7]= 3.8;
-
-        systemSensorsTCP.valve1Pos = 50;
-        systemSensorsTCP.valve2Pos = 10;
-
-        */
-
         *numOfBytesToSend =  pressSensorNum*(sizeof(float)) + 2*tempSensorNum*(sizeof(float)) + 2*sizeof(long);
         outputBuffer--;
         *outputBuffer = *numOfBytesToSend;
@@ -234,20 +211,20 @@ for(;;)
       }
 
       //cliente conectado y datos en el buffer
-      Serial.println("Reciving data...");
+      //Serial.println("Reciving data...");
       byte inputBuffer[client.available()];//crea un array de bytes del tamaño del buffer de datos 
       int inputDataNum = client.available();
-      Serial.print(inputDataNum);
-      Serial.println(" bytes");
+      //Serial.print(inputDataNum);
+      //Serial.println(" bytes");
       byte outputBuffer [255];//array de la respuesta
       uint8_t numOfBytesToSend = (uint8_t)1;
       *outputBuffer = numOfBytesToSend;
       for (int i = 0; i < inputDataNum; i++)
       {
         inputBuffer[i] = client.read();
-        Serial.print(i);
-        Serial.print(": ");
-        Serial.println(inputBuffer[i],HEX);
+        //Serial.print(i);
+        //Serial.print(": ");
+        //Serial.println(inputBuffer[i],HEX);
       }
       //Serial.println((uint8_t)outputBuffer[0]);
       TCPframeProcces(inputBuffer,&numOfBytesToSend,outputBuffer);

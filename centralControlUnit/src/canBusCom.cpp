@@ -43,7 +43,7 @@ void sendCANMsg (byte originMod, byte destMod, uint8_t cmd, byte *dataOut)
     canMsg.can_dlc = 8;
     memcpy(canMsg.data,dataOut,sizeof(int));
     mcp2515.sendMessage(&canMsg);
-    Serial.println("Message sent");
+    //Serial.println("Message sent");
 }
 
 void CANframeProcess(can_frame canMsg)
@@ -53,7 +53,7 @@ void CANframeProcess(can_frame canMsg)
 
   origMod = canMsg.can_id>>16 & 0xff;
   command = canMsg.can_id & 0xff;
-  Serial.println(command,HEX);
+  //Serial.println(command,HEX);
 
   switch (origMod)
   {
@@ -62,8 +62,8 @@ void CANframeProcess(can_frame canMsg)
     long valveDataIn;
     memcpy(&valveDataIn,canMsg.data,sizeof(long));
     systemSensorsCAN.valve1Pos = valveDataIn;
-    Serial.println(valveDataIn);
-    queueSendFlag = true;
+    //Serial.println(valveDataIn);
+    
     break;
   }
   case valveCompDir2:
@@ -76,12 +76,13 @@ void CANframeProcess(can_frame canMsg)
     float pressDataIn = 0;
     memcpy(&pressDataIn, canMsg.data,sizeof(float));
     systemSensorsCAN.pressureArray[command] = pressDataIn;
+    /*
     Serial.print("Sensor: ");
     Serial.print(command);
     Serial.print("   ");
     Serial.print("Presion: ");
     Serial.print(pressDataIn);
-    Serial.println("");
+    Serial.println("");*/
     break;
   }
   case tempModDir1:
@@ -129,7 +130,7 @@ for(;;)
     vTaskResume(samplingCallsTaskHandle);
     callFlag = false;
     noRespCount = 0;
-    Serial.println("message recived");
+    //Serial.println("message recived");
 
   }else
   {
@@ -145,7 +146,7 @@ for(;;)
     vTaskResume(samplingCallsTaskHandle);
     noRespCount = 0;
     callFlag = false;
-    Serial.println("NO response");
+    //Serial.println("NO response");
   }
   
   
@@ -158,39 +159,39 @@ for(;;)
 void samplingCallsTask (void* parameters)
 {
 TickType_t xLastWakeTime = xTaskGetTickCount();
-const TickType_t xFrequency = 1000;
+const TickType_t xFrequency = 300;
 for(;;)
 {
   sendCANMsg(CCUDir,pressureModDir,0,&emptyData);
-  vTaskSuspend(samplingCallsTaskHandle);
   callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   sendCANMsg(CCUDir,pressureModDir,1,&emptyData);
-  vTaskSuspend(samplingCallsTaskHandle);
   callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   sendCANMsg(CCUDir,pressureModDir,2,&emptyData);
-  vTaskSuspend(samplingCallsTaskHandle);
   callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   sendCANMsg(CCUDir,pressureModDir,3,&emptyData);
-  vTaskSuspend(samplingCallsTaskHandle);
   callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   sendCANMsg(CCUDir,pressureModDir,4,&emptyData);
-  vTaskSuspend(samplingCallsTaskHandle);
   callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   sendCANMsg(CCUDir,pressureModDir,5,&emptyData);
-  vTaskSuspend(samplingCallsTaskHandle);
   callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   sendCANMsg(CCUDir,pressureModDir,6,&emptyData);
-  vTaskSuspend(samplingCallsTaskHandle);
   callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   sendCANMsg(CCUDir,pressureModDir,7,&emptyData);
-  vTaskSuspend(samplingCallsTaskHandle);
   callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   sendCANMsg(CCUDir,valveCompDir1,4,&emptyData);
+  callFlag = true;
   vTaskSuspend(samplingCallsTaskHandle);
-  callFlag = true;
-  Serial.println("message sent");
+  queueSendFlag = true;
+  //Serial.println("message sent");
   vTaskDelayUntil( &xLastWakeTime, xFrequency );
-  callFlag = true;
 }
   
 }

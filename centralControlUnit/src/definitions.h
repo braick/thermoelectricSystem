@@ -20,12 +20,12 @@
 
 //comandos modulo de la valvula
 
-#define    stopCMD              0
-#define    calibrateCMD         1
-#define    monitorinCMD         2
-#define    positionControlCMD   3
-#define    sendPositionCMD      4
-#define    modSetPtCMD          5
+#define    stopValve                0
+#define    calibrateValve           1
+#define    monitorinCMD             2
+#define    positionControlValve     3
+#define    sendPositionValve        4
+#define    modSetPtValve             5
 
 
 ////////////////////////////////

@@ -54,7 +54,7 @@ void loop()
     {
       T0 = T1;
 
-      setPt = constrain(setPt, 0, 70);
+      setPt = constrain(setPt, 0, 100);
       sensorV =  PWMcontrolActionCalc (setPt,0);
       
     }

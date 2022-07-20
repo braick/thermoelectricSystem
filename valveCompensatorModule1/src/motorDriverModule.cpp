@@ -138,7 +138,7 @@ long PWMcontrolActionCalc (int closeAngle, uint8_t controlState)
     //return (uint8_t)EqPointPWM;
     //PID compensator
 
-    setPoint = map(closeAngle,0,70,0,5000);
+    setPoint = map(closeAngle,0,100,0,5000);
     valvePosition0 = valvePosition1;
     valvePosition1 = map((long)sensorValue,maxSensorValue,minSensorValue,0,5000);
     dp = valvePosition1 - valvePosition0;
