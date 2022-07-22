@@ -30,36 +30,30 @@ void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuf
         {
           sendCANMsg(CCUDir,valveCompDir1,valveCMD,emptyBytes);
         }
-        
-        
-        
         break;
     }
     case valveCompDir2:
     {
         ptr++;
-        switch (*ptr)
+        uint8_t valveCMD = (uint8_t)*ptr;
+        if (*ptr==modSetPtValve)
         {
-        case modSetPtCMD:
+          ptr++;
+          int sptOUT = (int)*ptr;
+          byte spFrameOUT[8];
+          memcpy(spFrameOUT,&sptOUT,sizeof(int));
+          sendCANMsg(CCUDir,valveCompDir2,valveCMD,spFrameOUT);
+        }
+        else
         {
-            
-            break;
+          sendCANMsg(CCUDir,valveCompDir2,valveCMD,emptyBytes);
         }
-        case readPosition:
-        {
-            
-            break;
-        }
-        default:
-        {
-            break;
-        }
-        }
+        break;
         break;
     }
     case sendSensorsData:
     {
-      
+        Serial.println("send sensors TCP command");
         if (xQueueReceive(systemSensorsQueue, &systemSensorsTCP,0) !=pdTRUE) 
         {
             *outputBuffer = nothigToRead;

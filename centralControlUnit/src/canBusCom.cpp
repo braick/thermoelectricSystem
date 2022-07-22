@@ -5,7 +5,7 @@ struct can_frame canMsgR, canMsgT;
 MCP2515 mcp2515(5);
 
 int command = 0;
-SystemSensors systemSensorsCAN;
+SystemSensors systemSensorsCAN, auxSensor;
 extern QueueHandle_t systemSensorsQueue;
 bool noResponseFlag = false;
 bool callFlag = false;
@@ -68,7 +68,9 @@ void CANframeProcess(can_frame canMsg)
   }
   case valveCompDir2:
   {
-    /* code */
+    long valveDataIn;
+    memcpy(&valveDataIn,canMsg.data,sizeof(long));
+    systemSensorsCAN.valve2Pos = valveDataIn;
     break;
   }
   case pressureModDir:
@@ -81,8 +83,8 @@ void CANframeProcess(can_frame canMsg)
     Serial.print(command);
     Serial.print("   ");
     Serial.print("Presion: ");
-    Serial.print(pressDataIn);
-    Serial.println("");*/
+    Serial.print(pressDataIn);*/
+    Serial.println("Press response");
     break;
   }
   case tempModDir1:
@@ -115,22 +117,25 @@ for(;;)
 {
   if (queueSendFlag)
   {
-    if (xQueueSend(systemSensorsQueue,&systemSensorsCAN,0) == pdTRUE)
+    if (xQueueSend(systemSensorsQueue,&systemSensorsCAN,0) != pdTRUE)
     {
+      Serial.println("Queue full");
+      xQueueReceive(systemSensorsQueue,&auxSensor,0);
+    }
+    else
+    {
+      Serial.println("Queue sent");
       queueSendFlag = false;
     }
-    
   }
-
-  
   
   if (mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) 
   {
     CANframeProcess(canMsgR);
-    vTaskResume(samplingCallsTaskHandle);
     callFlag = false;
     noRespCount = 0;
-    //Serial.println("message recived");
+    vTaskResume(samplingCallsTaskHandle);
+    Serial.println("message recived");
 
   }else
   {
@@ -141,12 +146,12 @@ for(;;)
    
   }
 
-  if (callFlag && (noRespCount>2))
+  if (callFlag && (noRespCount>10))
   {
     vTaskResume(samplingCallsTaskHandle);
     noRespCount = 0;
     callFlag = false;
-    //Serial.println("NO response");
+    Serial.println("NO response");
   }
   
   
@@ -189,8 +194,11 @@ for(;;)
   sendCANMsg(CCUDir,valveCompDir1,4,&emptyData);
   callFlag = true;
   vTaskSuspend(samplingCallsTaskHandle);
+  sendCANMsg(CCUDir,valveCompDir2,4,&emptyData);
+  callFlag = true;
+  vTaskSuspend(samplingCallsTaskHandle);
   queueSendFlag = true;
-  //Serial.println("message sent");
+  Serial.println("Samplig finish loop");
   vTaskDelayUntil( &xLastWakeTime, xFrequency );
 }
   

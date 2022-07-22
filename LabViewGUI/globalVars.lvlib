@@ -12,22 +12,32 @@
 		<Property Name="type" Type="Str">Global</Property>
 		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!!B(1!!!#%!A!!!!!!"!!R!)1&gt;#&lt;W^M:7&amp;O!!%!!!!!!!!!!!!!!!</Property>
 	</Item>
-	<Item Name="sensD" Type="Variable">
-		<Property Name="featurePacks" Type="Str">Network</Property>
-		<Property Name="Network:UseBinding" Type="Str">False</Property>
-		<Property Name="Network:UseBuffering" Type="Str">False</Property>
-		<Property Name="numTypedefs" Type="UInt">0</Property>
-		<Property Name="type" Type="Str">Network</Property>
-		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!#VM1!!!#%!A!!!!!!)!!^!#1!*6G&amp;M&gt;G61&lt;X-R!!^!#1!*6G&amp;M&gt;G61&lt;X-S!!5!#1!!'E"!!!(`````!!).5(*F=X.V=G6"=H*B?1!91%!!!@````]!!AJ5:7VQ18*S98ES!!!91%!!!@````]!!AJ5:7VQ18*S98ER!!!91&amp;!!"1!!!!%!!Q!%!!5(1WRV=X2F=A!91%!!!@````]!"AN4:7ZT&lt;X*T2'&amp;U91!"!!=!!!!!!!!!!!!!!!!</Property>
-	</Item>
-	<Item Name="sensDat" Type="Variable">
+	<Item Name="press" Type="Variable">
 		<Property Name="featurePacks" Type="Str">Global</Property>
 		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>
 		<Property Name="Network:UseBinding" Type="Str">False</Property>
 		<Property Name="Network:UseBuffering" Type="Str">False</Property>
 		<Property Name="numTypedefs" Type="UInt">0</Property>
 		<Property Name="type" Type="Str">Global</Property>
-		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!#VM1!!!#%!A!!!!!!)!!^!!Q!*6G&amp;M&gt;G61&lt;X-R!!^!!Q!*6G&amp;M&gt;G61&lt;X-S!!5!#1!!'E"!!!(`````!!).5(*F=X.V=G6"=H*B?1!91%!!!@````]!!AJ5:7VQ18*S98ES!!!91%!!!@````]!!AJ5:7VQ18*S98ER!!!91&amp;!!"1!!!!%!!Q!%!!5(1WRV=X2F=A!91%!!!@````]!"AN4:7ZT&lt;X*T2'&amp;U91!"!!=!!!!!!!!!!!!!!!!</Property>
+		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!!F)1!!!#%!A!!!!!!"!!V!#1!'5WFO:WRF!!!"!!!!!!!!!!!!!!!!!!!</Property>
+	</Item>
+	<Item Name="saveData" Type="Variable">
+		<Property Name="featurePacks" Type="Str">Global</Property>
+		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>
+		<Property Name="Network:UseBinding" Type="Str">False</Property>
+		<Property Name="Network:UseBuffering" Type="Str">False</Property>
+		<Property Name="numTypedefs" Type="UInt">0</Property>
+		<Property Name="type" Type="Str">Global</Property>
+		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!!B(1!!!#%!A!!!!!!"!!R!)1&gt;#&lt;W^M:7&amp;O!!%!!!!!!!!!!!!!!!</Property>
+	</Item>
+	<Item Name="sensDt" Type="Variable">
+		<Property Name="featurePacks" Type="Str">Global</Property>
+		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>
+		<Property Name="Network:UseBinding" Type="Str">False</Property>
+		<Property Name="Network:UseBuffering" Type="Str">False</Property>
+		<Property Name="numTypedefs" Type="UInt">0</Property>
+		<Property Name="type" Type="Str">Global</Property>
+		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!$*R1!!!#%!A!!!!!!*!!^!#1!*6G&amp;M&gt;G61&lt;X-R!!^!#1!*6G&amp;M&gt;G61&lt;X-S!!5!#1!!'E"!!!(`````!!).5(*F=X.V=G6"=H*B?1!91%!!!@````]!!AJ5:7VQ18*S98ES!!!91%!!!@````]!!AJ5:7VQ18*S98ER!!!31&amp;1!"AJ5;7VF)&amp;.U97VQ!!!;1&amp;!!"A!!!!%!!Q!%!!5!"A&gt;$&lt;(6T&gt;'6S!"B!1!!"`````Q!(#V.F&lt;H.P=H.%982B!!%!#!!!!!!!!!!!!!!!!!</Property>
 	</Item>
 	<Item Name="state" Type="Variable">
 		<Property Name="featurePacks" Type="Str">Global</Property>
