@@ -17,3 +17,4 @@ void calibrateValve();
 void configureDriverOutputs();
 long PWMcontrolActionCalc (int closeAngle, uint8_t controlState);
 void openValve();
+void monitorPos();

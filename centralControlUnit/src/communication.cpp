@@ -3,7 +3,12 @@
 #include "canBusCom.h"
 
 SystemSensors systemSensorsTCP;
-QueueHandle_t systemSensorsQueue = xQueueCreate(2,sizeof(systemSensorsTCP));
+QueueHandle_t systemSensorsQueue = xQueueCreate(1,sizeof(systemSensorsTCP));
+
+extern QueueHandle_t CANCallOutQueue;
+
+extern  uint8_t noRespArray[255];
+
 
 void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuffer)
 {
@@ -24,11 +29,13 @@ void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuf
           int sptOUT = (int)*ptr;
           byte spFrameOUT[8];
           memcpy(spFrameOUT,&sptOUT,sizeof(int));
-          sendCANMsg(CCUDir,valveCompDir1,valveCMD,spFrameOUT);
+          //xSemaphoreTake(CANMutex,100);
+          sendCANMsgToQueue(CCUDir,valveCompDir1,valveCMD,spFrameOUT,true);
+          //xSemaphoreGive(CANMutex);
         }
         else
         {
-          sendCANMsg(CCUDir,valveCompDir1,valveCMD,emptyBytes);
+          sendCANMsgToQueue(CCUDir,valveCompDir1,valveCMD,emptyBytes,true);
         }
         break;
     }
@@ -42,26 +49,28 @@ void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuf
           int sptOUT = (int)*ptr;
           byte spFrameOUT[8];
           memcpy(spFrameOUT,&sptOUT,sizeof(int));
-          sendCANMsg(CCUDir,valveCompDir2,valveCMD,spFrameOUT);
+          sendCANMsgToQueue(CCUDir,valveCompDir2,valveCMD,spFrameOUT,true);
         }
         else
         {
-          sendCANMsg(CCUDir,valveCompDir2,valveCMD,emptyBytes);
+          sendCANMsgToQueue(CCUDir,valveCompDir2,valveCMD,emptyBytes,true);
         }
         break;
         break;
     }
     case sendSensorsData:
     {
-        Serial.println("send sensors TCP command");
-        if (xQueueReceive(systemSensorsQueue, &systemSensorsTCP,0) !=pdTRUE) 
+        //Serial.println("send sensors TCP command");
+        if (xQueuePeek(systemSensorsQueue, &systemSensorsTCP,0) !=pdTRUE) 
         {
             *outputBuffer = nothigToRead;
             break;
         }
-        *numOfBytesToSend =  pressSensorNum*(sizeof(float)) + 2*tempSensorNum*(sizeof(float)) + 2*sizeof(long);
+        *numOfBytesToSend = 1 + pressSensorNum*(sizeof(float)) + 2*tempSensorNum*(sizeof(float)) + 2*sizeof(long);
         outputBuffer--;
         *outputBuffer = *numOfBytesToSend;
+        outputBuffer++;
+        *outputBuffer = sendSensorsData;
         outputBuffer++;
         for (size_t i = 0; i < pressSensorNum; i++)
         {
@@ -82,6 +91,40 @@ void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuf
         outputBuffer+=sizeof(long);
         memcpy(outputBuffer,&systemSensorsTCP.valve2Pos,sizeof(long));
         break;
+    }
+    case systemsStatusReq:
+    {
+      *numOfBytesToSend = 2 + numOfSysModules;
+      outputBuffer--;
+      *outputBuffer = *numOfBytesToSend;
+      outputBuffer++;
+      *outputBuffer = systemsStatusReq;
+      outputBuffer++;
+
+      *outputBuffer = noRespArray[valveCompDir1];
+      outputBuffer++;
+      *outputBuffer = noRespArray[valveCompDir2];
+      outputBuffer++;
+      *outputBuffer = noRespArray[tempModDir1];
+      outputBuffer++;
+      *outputBuffer = noRespArray[tempModDir2];
+      outputBuffer++;
+      *outputBuffer = noRespArray[pressureModDir];
+      outputBuffer++;
+      *outputBuffer = noRespArray[200];
+      outputBuffer++;
+      
+      break;
+    }
+    case alarmTestON:
+    {
+      
+      break;
+    }
+    case alarmTestOFF:
+    {
+      
+      break;
     }
     default:
     {
@@ -210,7 +253,7 @@ for(;;)
       int inputDataNum = client.available();
       //Serial.print(inputDataNum);
       //Serial.println(" bytes");
-      byte outputBuffer [255];//array de la respuesta
+      byte outputBuffer [255] = {0x00};//array de la respuesta
       uint8_t numOfBytesToSend = (uint8_t)1;
       *outputBuffer = numOfBytesToSend;
       for (int i = 0; i < inputDataNum; i++)

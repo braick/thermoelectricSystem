@@ -7,6 +7,11 @@ MCP2515 mcp2515(5);
 int command = 0;
 SystemSensors systemSensorsCAN, auxSensor;
 extern QueueHandle_t systemSensorsQueue;
+uint8_t noRespArray [255] = {0};
+
+QueueHandle_t CANCallOutQueue = xQueueCreate(50,sizeof(canMsgT));
+QueueHandle_t CANCallInQueue = xQueueCreate(10,sizeof(canMsgR));
+
 bool noResponseFlag = false;
 bool callFlag = false;
 uint8_t noRespCount = 0;
@@ -26,7 +31,7 @@ void configureCANModule(){
 }
 
 
-void sendCANMsg (byte originMod, byte destMod, uint8_t cmd, byte *dataOut)
+void sendCANMsgToQueue (byte originMod, byte destMod, uint8_t cmd, byte *dataOut, bool sendToFront)
 {
     struct can_frame canMsg;
     unsigned long canIdLong = 0;
@@ -42,8 +47,15 @@ void sendCANMsg (byte originMod, byte destMod, uint8_t cmd, byte *dataOut)
     
     canMsg.can_dlc = 8;
     memcpy(canMsg.data,dataOut,sizeof(int));
-    mcp2515.sendMessage(&canMsg);
-    //Serial.println("Message sent");
+    
+    if (sendToFront)
+    {
+      xQueueSendToFront(CANCallOutQueue, &canMsg,10);
+    }else
+    {
+      xQueueSend(CANCallOutQueue,&canMsg,10);
+    }
+    //mcp2515.sendMessage(&canMsg);
 }
 
 void CANframeProcess(can_frame canMsg)
@@ -59,18 +71,37 @@ void CANframeProcess(can_frame canMsg)
   {
   case valveCompDir1:
   {
-    long valveDataIn;
-    memcpy(&valveDataIn,canMsg.data,sizeof(long));
-    systemSensorsCAN.valve1Pos = valveDataIn;
-    //Serial.println(valveDataIn);
+    switch (command)
+    {
+    case 0x00:
+      long valveDataIn;
+      memcpy(&valveDataIn,canMsg.data,sizeof(long));
+      systemSensorsCAN.valve1Pos = valveDataIn;
+      break;
+    case 0xA0:
+      Serial.println("Valve 1 ok recived");
+      break;
+    default:
+      break;
+    }
     
     break;
   }
   case valveCompDir2:
   {
-    long valveDataIn;
-    memcpy(&valveDataIn,canMsg.data,sizeof(long));
-    systemSensorsCAN.valve2Pos = valveDataIn;
+    switch (command)
+    {
+    case 0x00:
+      long valveDataIn;
+      memcpy(&valveDataIn,canMsg.data,sizeof(long));
+      systemSensorsCAN.valve2Pos = valveDataIn;
+      break;
+    case 0xA0:
+      //setpoint modified
+      break;
+    default:
+      break;
+    }
     break;
   }
   case pressureModDir:
@@ -78,13 +109,6 @@ void CANframeProcess(can_frame canMsg)
     float pressDataIn = 0;
     memcpy(&pressDataIn, canMsg.data,sizeof(float));
     systemSensorsCAN.pressureArray[command] = pressDataIn;
-    /*
-    Serial.print("Sensor: ");
-    Serial.print(command);
-    Serial.print("   ");
-    Serial.print("Presion: ");
-    Serial.print(pressDataIn);*/
-    Serial.println("Press response");
     break;
   }
   case tempModDir1:
@@ -104,6 +128,7 @@ void CANframeProcess(can_frame canMsg)
   }
 }
 
+
 TaskHandle_t  samplingCallsTaskHandle = NULL;
 TaskHandle_t  canBusComTaskHandle = NULL;
 void canBusTask (void* parameters)
@@ -113,48 +138,36 @@ const TickType_t xFrequency = 10;
 //vTaskSuspend(NULL);
 configureCANModule();
 intializeTasks2();
+for (size_t i = 0; i < 255; i++)
+{
+  noRespArray[i] = 0xff;
+}
+
 for(;;)
 {
-  if (queueSendFlag)
-  {
-    if (xQueueSend(systemSensorsQueue,&systemSensorsCAN,0) != pdTRUE)
+    if (mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) 
     {
-      Serial.println("Queue full");
-      xQueueReceive(systemSensorsQueue,&auxSensor,0);
-    }
-    else
+      Serial.println("response");
+      CANframeProcess(canMsgR);
+      noRespArray[canMsgT.can_id>>8 & 0xff] = 0;
+      xQueueOverwrite(systemSensorsQueue,&systemSensorsCAN);
+    }else
     {
-      Serial.println("Queue sent");
-      queueSendFlag = false;
+      if (noRespArray[canMsgT.can_id>>8 & 0xff] < 255)
+      {
+        noRespArray[canMsgT.can_id>>8 & 0xff]++;
+        if (noRespArray[canMsgT.can_id>>8 & 0xff] <=1)
+        {
+          xQueueSend(CANCallOutQueue,&canMsgT,5);
+        }
+      }
     }
-  }
   
-  if (mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) 
+  if (xQueueReceive(CANCallOutQueue,&canMsgT,5) == pdTRUE)
   {
-    CANframeProcess(canMsgR);
-    callFlag = false;
-    noRespCount = 0;
-    vTaskResume(samplingCallsTaskHandle);
-    Serial.println("message recived");
-
-  }else
-  {
-   if (callFlag)
-   {
-    noRespCount++;
-   }
-   
+    mcp2515.sendMessage(&canMsgT);
+    Serial.println("call");
   }
-
-  if (callFlag && (noRespCount>10))
-  {
-    vTaskResume(samplingCallsTaskHandle);
-    noRespCount = 0;
-    callFlag = false;
-    Serial.println("NO response");
-  }
-  
-  
   vTaskDelayUntil( &xLastWakeTime, xFrequency );
 }
   
@@ -167,38 +180,14 @@ TickType_t xLastWakeTime = xTaskGetTickCount();
 const TickType_t xFrequency = 300;
 for(;;)
 {
-  sendCANMsg(CCUDir,pressureModDir,0,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,pressureModDir,1,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,pressureModDir,2,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,pressureModDir,3,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,pressureModDir,4,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,pressureModDir,5,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,pressureModDir,6,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,pressureModDir,7,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,valveCompDir1,4,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  sendCANMsg(CCUDir,valveCompDir2,4,&emptyData);
-  callFlag = true;
-  vTaskSuspend(samplingCallsTaskHandle);
-  queueSendFlag = true;
-  Serial.println("Samplig finish loop");
+
+  //lectura de los sensores de presion
+
+  for (size_t i = 0; i < 8; i++)
+  {
+    sendCANMsgToQueue(CCUDir,pressureModDir,i,&emptyData,false);
+  }
+  sendCANMsgToQueue(CCUDir,valveCompDir1,4,&emptyData,false);
   vTaskDelayUntil( &xLastWakeTime, xFrequency );
 }
   

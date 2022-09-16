@@ -7,7 +7,7 @@ extern int setPt;
 extern valveControlSM SM;
 extern long valvePosition1;
 
-void valvePos2CANFrame (byte originMod, byte destMod, long valvePos, can_frame *canMsg)
+void sendPos2CAN (byte originMod, byte destMod, long valvePos)
 {
     //struct can_frame canMsg;
     unsigned long canIdLong = 0;
@@ -19,10 +19,28 @@ void valvePos2CANFrame (byte originMod, byte destMod, long valvePos, can_frame *
     canIDByte[0]= 0x00;
 
     memcpy(&canIdLong,canIDByte,sizeof(unsigned long));
-    (*canMsg).can_id = canIdLong;
+    canMsgT.can_id = canIdLong;
     
-    (*canMsg).can_dlc = 8;
-    memcpy((*canMsg).data, &valvePos, sizeof(long));
+    canMsgT.can_dlc = 8;
+    memcpy(canMsgT.data, &valvePos, sizeof(long));
+    mcp2515.sendMessage(&canMsgT);
+}
+
+void sendCANok(byte originMod, byte destMod)
+{
+  unsigned long canIdLong = 0;
+  byte canIDByte[4];
+  canIDByte[3] = 0x80;
+  canIDByte[2] = originMod;
+  canIDByte[1] = destMod;
+  canIDByte[0]= 0xA0  ;
+
+  memcpy(&canIdLong,canIDByte,sizeof(unsigned long));
+  canMsgT.can_id = canIdLong;
+
+  canMsgT.can_dlc = 8;
+  canMsgT.data[0] = 0x01;
+  mcp2515.sendMessage(&canMsgT);
 }
 
 void configurecanModule()
@@ -49,32 +67,37 @@ if (mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK)
     case stopCMD:
     {
       SM = stop;
+      sendCANok(valveCompDir1,CCUDir);
       break;
     }
     case calibrateCMD:
     {
       SM = calibrate;
+      sendCANok(valveCompDir1,CCUDir);
       break;
     }
     case monitorinCMD:
     { 
       SM = monitorin;
+      //sendCANok(valveCompDir1,CCUDir);
       break;
     }
     case positionControlCMD:
     {
       SM = positionControl;
+      sendCANok(valveCompDir1,CCUDir);
       break;
     }
     case sendPositionCMD:
     { 
-      valvePos2CANFrame(valveCompDir1,CCUDir,valvePosition1,&canMsgT);
-      mcp2515.sendMessage(&canMsgT);
+      sendPos2CAN(valveCompDir1,CCUDir,valvePosition1);
+      
       break;
     }
     case modSetPtCMD:
     {
       memcpy(&setPt,canMsgR.data,sizeof(int));
+      sendCANok(valveCompDir1,CCUDir);
       break;
     }
     default:
@@ -83,10 +106,5 @@ if (mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK)
     }
     }
   }
-}
-
-void sendCanMessage(uint32_t canID, byte* message)
-{
-    
 }
 

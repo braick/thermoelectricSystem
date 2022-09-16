@@ -1,5 +1,11 @@
 //Lista de definiciones
 
+//GPIOs
+
+#define valve1RelayGPIO 16
+#define valve2RelayGPIO 27
+#define alarmRelayGPIO 33
+
 //estados de la state machine
 #define stop 0
 #define calibrate 1
@@ -29,8 +35,11 @@
 
 
 ////////////////////////////////
-
-#define sendSensorsData 0x01
+//peticiones tcp
+#define sendSensorsData 0x10
+#define systemsStatusReq 0x02
+#define alarmTestON 0xf1
+#define alarmTestOFF 0xf0
 
 //respuestas 
 #define ok 0xa0//ok
@@ -45,20 +54,17 @@
 #define pressSensorNum 8
 #define tempSensorNum 8
 
-//comandos
 
 //controlador de la valvula
-
 #define modSetPtCMD 0x01
 #define readPosition 0x02
 
 
-//modulo de termopares
 
+//modulo de termopares
 #define readTemperatures 0x01
 
-// modulo de sensores de presionç
-
+// modulo de sensores de presion
 #define readPressures 0x01
 
 struct SystemSensors
@@ -69,3 +75,5 @@ struct SystemSensors
     long valve1Pos;
     long valve2Pos;
 };
+
+#define numOfSysModules 6

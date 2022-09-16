@@ -120,6 +120,12 @@ void openValve()
 {
     analogWrite(PWM_pin,0);
 }
+
+void monitorPos()
+{
+  long sensorValue =  getValvePosition();
+  valvePosition1 = map((long)sensorValue,maxSensorValue,minSensorValue,0,5000);
+}
 /**
  * @brief Funcion de calculo de la accion de control
  * 

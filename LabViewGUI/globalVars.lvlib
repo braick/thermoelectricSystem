@@ -48,4 +48,13 @@
 		<Property Name="type" Type="Str">Global</Property>
 		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!"^?1!!!#%!A!!!!!!"!'&gt;!&amp;A!&amp;"X&gt;B;82J&lt;G=69W^O&lt;G6D&gt;#"U&lt;S"U9X!A=W6S&gt;G6S$7.P&lt;G:J:X6S982J&lt;WY-:'&amp;U93"M&lt;W&gt;H;7ZH)(.B&gt;GFO:S"E982B)'&amp;O:#"D&lt;'^T:3"D&lt;WZO:7.U;7^O!!2&amp;&lt;H6N!!!"!!!!!!!!!!!!!!!!</Property>
 	</Item>
+	<Item Name="systemStatus" Type="Variable">
+		<Property Name="featurePacks" Type="Str">Global</Property>
+		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>
+		<Property Name="Network:UseBinding" Type="Str">False</Property>
+		<Property Name="Network:UseBuffering" Type="Str">False</Property>
+		<Property Name="numTypedefs" Type="UInt">0</Property>
+		<Property Name="type" Type="Str">Global</Property>
+		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!$/SA!!!#%!A!!!!!!(!"J!)22797RW:3"D&lt;WVQ:7ZT982P=C")6!!!'E!B&amp;6:B&lt;(:F)'.P&lt;8"F&lt;H.B&gt;'^S)%R5)!!;1#%66'6N='6S982V=G5A&lt;7^E&gt;7RF)%B5!"J!)265:7VQ:8*B&gt;(6S:3"N&lt;W2V&lt;'5A4&amp;1!&amp;%!B$V"S:8.T&gt;8*F)'VP:(6M:1!31#%-5'^X:8)A&lt;7^E&gt;7RF!!!G1&amp;!!"A!!!!%!!A!$!!1!"2*"&gt;G&amp;J&lt;'&amp;C:3"T?8.U:7VT)$)!!!%!"A!!!!!!!!!!!!!!!!!!</Property>
+	</Item>
 </Library>

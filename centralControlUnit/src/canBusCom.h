@@ -5,5 +5,5 @@
 #include "tasks.h"
 
 void configureCANModule();
-void sendCANMsg (byte originMod, byte destMod, uint8_t cmd, byte *dataOut);
+void sendCANMsgToQueue (byte originMod, byte destMod, uint8_t cmd, byte *dataOut, bool sendToFront);
 void CANframeProcess(can_frame canMsg);
