@@ -9,6 +9,8 @@ extern QueueHandle_t CANCallOutQueue;
 
 extern  uint8_t noRespArray[255];
 
+extern uint8_t systemSMHT, systemSMLT;
+
 
 void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuffer)
 {
@@ -116,14 +118,12 @@ void TCPframeProcces(byte *inputBuffer,uint8_t *numOfBytesToSend,byte* outputBuf
       
       break;
     }
-    case alarmTestON:
+    case relaysTest:
     {
-      
-      break;
-    }
-    case alarmTestOFF:
-    {
-      
+      ptr++;
+      systemSMHT = *ptr; 
+      //Serial.print("control state changed to:");
+      //Serial.println(*ptr);
       break;
     }
     default:

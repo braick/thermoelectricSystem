@@ -79,7 +79,7 @@ void CANframeProcess(can_frame canMsg)
       systemSensorsCAN.valve1Pos = valveDataIn;
       break;
     case 0xA0:
-      Serial.println("Valve 1 ok recived");
+      //Serial.println("Valve 1 ok recived");
       break;
     default:
       break;
@@ -145,13 +145,13 @@ for (size_t i = 0; i < 255; i++)
 
 for(;;)
 {
-    if (mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) 
+    if ((mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) && ((canMsgT.can_id>>8 & 0xff) == (canMsgR.can_id>>16 & 0xff))) 
     {
-      Serial.println("response");
       CANframeProcess(canMsgR);
       noRespArray[canMsgT.can_id>>8 & 0xff] = 0;
       xQueueOverwrite(systemSensorsQueue,&systemSensorsCAN);
-    }else
+    }
+    else
     {
       if (noRespArray[canMsgT.can_id>>8 & 0xff] < 255)
       {
@@ -166,7 +166,7 @@ for(;;)
   if (xQueueReceive(CANCallOutQueue,&canMsgT,5) == pdTRUE)
   {
     mcp2515.sendMessage(&canMsgT);
-    Serial.println("call");
+    //Serial.println("call");
   }
   vTaskDelayUntil( &xLastWakeTime, xFrequency );
 }

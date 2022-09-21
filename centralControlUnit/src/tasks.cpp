@@ -25,6 +25,16 @@ void intializeTasks1()
   1 
   );
 
+  extern TaskHandle_t  controlTaskHandle;
+  xTaskCreatePinnedToCore(
+  controlTaskFuntion, 
+  "tarea de control del sistema ", 
+  2000, 
+  NULL, 
+  1, 
+  &controlTaskHandle, 
+  1 
+  );
 }
 
 void intializeTasks2()

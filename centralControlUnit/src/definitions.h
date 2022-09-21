@@ -1,10 +1,6 @@
 //Lista de definiciones
 
-//GPIOs
 
-#define valve1RelayGPIO 16
-#define valve2RelayGPIO 27
-#define alarmRelayGPIO 33
 
 //estados de la state machine
 #define stop 0
@@ -38,8 +34,7 @@
 //peticiones tcp
 #define sendSensorsData 0x10
 #define systemsStatusReq 0x02
-#define alarmTestON 0xf1
-#define alarmTestOFF 0xf0
+#define relaysTest 0xf1
 
 //respuestas 
 #define ok 0xa0//ok

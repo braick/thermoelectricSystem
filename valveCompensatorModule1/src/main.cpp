@@ -62,7 +62,9 @@ void loop()
     break;
   }
   default:
-    SM = stop;
+  {
+    //SM = stop;
     break;
+  }
   }
 }
