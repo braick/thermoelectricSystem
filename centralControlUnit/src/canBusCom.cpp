@@ -53,7 +53,7 @@ void sendCANMsgToQueue (byte originMod, byte destMod, uint8_t cmd, byte *dataOut
       xQueueSendToFront(CANCallOutQueue, &canMsg,10);
     }else
     {
-      xQueueSend(CANCallOutQueue,&canMsg,10);
+      xQueueSend(CANCallOutQueue,&canMsg,100);
     }
     //mcp2515.sendMessage(&canMsg);
 }
@@ -109,16 +109,28 @@ void CANframeProcess(can_frame canMsg)
     float pressDataIn = 0;
     memcpy(&pressDataIn, canMsg.data,sizeof(float));
     systemSensorsCAN.pressureArray[command] = pressDataIn;
+    //Serial.print("Press: ");
+    //Serial.print(command);
+    //Serial.print(" :");
+    //Serial.println(pressDataIn);
     break;
   }
   case tempModDir1:
   {
-    /* code */
+    float tempDataIn = 0;
+    memcpy(&tempDataIn, canMsg.data,sizeof(float));
+    systemSensorsCAN.tempArrayMod1[command] = tempDataIn;
+    //Serial.print("Temp: ");
+    //Serial.print(command);
+    //Serial.print(" :");
+    //Serial.println(tempDataIn);
     break;
   }
   case tempModDir2:
   {
-    /* code */
+    float tempDataIn = 0;
+    memcpy(&tempDataIn, canMsg.data,sizeof(float));
+    systemSensorsCAN.tempArrayMod2[command] = tempDataIn;
     break;
   }
   default:
@@ -135,6 +147,7 @@ void canBusTask (void* parameters)
 {
 TickType_t xLastWakeTime = xTaskGetTickCount();
 const TickType_t xFrequency = 10;
+TickType_t callTimeout0 = 0, callTimeout1 = 0;
 //vTaskSuspend(NULL);
 configureCANModule();
 intializeTasks2();
@@ -142,31 +155,42 @@ for (size_t i = 0; i < 255; i++)
 {
   noRespArray[i] = 0xff;
 }
-
 for(;;)
 {
     if ((mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) && ((canMsgT.can_id>>8 & 0xff) == (canMsgR.can_id>>16 & 0xff))) 
     {
+      callFlag = false;
+      //Serial.print("Response module: ");
+      //Serial.println(canMsgR.can_id,HEX);
       CANframeProcess(canMsgR);
       noRespArray[canMsgT.can_id>>8 & 0xff] = 0;
       xQueueOverwrite(systemSensorsQueue,&systemSensorsCAN);
     }
     else
     {
-      if (noRespArray[canMsgT.can_id>>8 & 0xff] < 255)
+      //Serial.println("No response");
+      callTimeout1 = xTaskGetTickCount();
+      if (callFlag && (callTimeout1 - callTimeout0)>50)
       {
-        noRespArray[canMsgT.can_id>>8 & 0xff]++;
-        if (noRespArray[canMsgT.can_id>>8 & 0xff] <=1)
+        callFlag = false;
+        if (noRespArray[canMsgT.can_id>>8 & 0xff] < 255)
         {
-          xQueueSend(CANCallOutQueue,&canMsgT,5);
+          noRespArray[canMsgT.can_id>>8 & 0xff]++;
+          if (noRespArray[canMsgT.can_id>>8 & 0xff] <=1)
+          {
+            xQueueSend(CANCallOutQueue,&canMsgT,5);
+          }
         }
       }
     }
-  
-  if (xQueueReceive(CANCallOutQueue,&canMsgT,5) == pdTRUE)
+    
+  if ((xQueueReceive(CANCallOutQueue,&canMsgT,5) == pdTRUE) && !callFlag)
   {
+    callFlag = true;
     mcp2515.sendMessage(&canMsgT);
-    //Serial.println("call");
+    callTimeout0 = xTaskGetTickCount();
+    //Serial.print("Call module: ");
+    //Serial.println(canMsgT.can_id, HEX);
   }
   vTaskDelayUntil( &xLastWakeTime, xFrequency );
 }
@@ -176,19 +200,19 @@ for(;;)
 
 void samplingCallsTask (void* parameters)
 {
-TickType_t xLastWakeTime = xTaskGetTickCount();
-const TickType_t xFrequency = 300;
-for(;;)
-{
-
-  //lectura de los sensores de presion
-
-  for (size_t i = 0; i < 8; i++)
+  TickType_t xLastWakeTime = xTaskGetTickCount();
+  const TickType_t xFrequency = 250;
+  for(;;)
   {
-    sendCANMsgToQueue(CCUDir,pressureModDir,i,&emptyData,false);
+    for (size_t i = 0; i < 8; i++)
+    {
+      sendCANMsgToQueue(CCUDir,pressureModDir,i,&emptyData,false);
+    }
+    for (size_t i = 0; i < 8; i++)
+    {
+      sendCANMsgToQueue(CCUDir,tempModDir1,i,&emptyData,false);
+    }
+    sendCANMsgToQueue(CCUDir,valveCompDir1,4,&emptyData,false);
+    vTaskDelayUntil( &xLastWakeTime, xFrequency );
   }
-  sendCANMsgToQueue(CCUDir,valveCompDir1,4,&emptyData,false);
-  vTaskDelayUntil( &xLastWakeTime, xFrequency );
-}
-  
 }
