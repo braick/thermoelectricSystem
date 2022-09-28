@@ -5,6 +5,7 @@
 	<Property Name="varPersistentID:{2C595DA2-D28F-46DC-8ECB-26B3A332A0AD}" Type="Ref">/My Computer/globalVars.lvlib/press</Property>
 	<Property Name="varPersistentID:{62E55119-BD7E-48CF-9E97-DE38A7BC701D}" Type="Ref">/My Computer/globalVars.lvlib/sensDt</Property>
 	<Property Name="varPersistentID:{8B84199B-D890-45B4-89CF-E0B2B27F5B7C}" Type="Ref">/My Computer/globalVars.lvlib/loopsStop</Property>
+	<Property Name="varPersistentID:{BDC80308-6EA7-438D-A016-9753B8F35872}" Type="Ref">/My Computer/globalVars.lvlib/conexStat</Property>
 	<Property Name="varPersistentID:{D140D339-AE5A-402F-B5C2-55CA1D6C5BE2}" Type="Ref">/My Computer/globalVars.lvlib/saveData</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
@@ -18,6 +19,7 @@
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="callResponse.vi" Type="VI" URL="../callResponse.vi"/>
 		<Item Name="CANFrame2SensorValVI.vi" Type="VI" URL="../CANFrame2SensorValVI.vi"/>
+		<Item Name="conexStatCont.ctl" Type="VI" URL="../conexStatCont.ctl"/>
 		<Item Name="controlSystemStatus.ctl" Type="VI" URL="../controlSystemStatus.ctl"/>
 		<Item Name="fullPath.vi" Type="VI" URL="../fullPath.vi"/>
 		<Item Name="globalVars.lvlib" Type="Library" URL="../globalVars.lvlib"/>

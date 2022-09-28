@@ -172,11 +172,12 @@ TickType_t timeOut = 0;
 ////definir parametros del servidor
 WiFiServer tcpServerObj;
 WiFiClient client;
-
+bool printFlag = true;
 #define ApConexion 0
 #define waitingForClient 1
 #define waitingForData 2
 uint8_t stateMachineHandle = 0;
+uint16_t clientCallTimeOut = clientDisconnectTimeout;
 for(;;)
 {
   switch (stateMachineHandle)
@@ -216,6 +217,7 @@ for(;;)
       if (WiFi.status() != WL_CONNECTED)
       {
         Serial.println("WARNING: Conexion lost");
+        client.stop();
         stateMachineHandle = ApConexion;
         break;
       }
@@ -224,18 +226,32 @@ for(;;)
       if(client)
       {
         Serial.println("Cliente conectado");
+        printFlag = true;
         stateMachineHandle = waitingForData;
         break;
       }
-      //Serial.println("Waiting for client");
 
+      if (printFlag)
+      {
+        Serial.println("Waiting for client");
+        printFlag = false;
+      }
       break;
-  }  
+    }  
     case waitingForData://esperando datos
     {
+      if (WiFi.status() != WL_CONNECTED)
+      {
+        Serial.println("WARNING: Conexion lost");
+        client.stop();
+        stateMachineHandle = ApConexion;
+        break;
+      }
+
       if (!client.connected())
       {
         Serial.println("Client disconnect");
+        client.stop();
         stateMachineHandle = waitingForClient;
         break;
       }
@@ -244,8 +260,18 @@ for(;;)
       {
         //Serial.print("Waiting data at time: ");
         //Serial.println(xTaskGetTickCount());
+        clientCallTimeOut--;
+        if (clientCallTimeOut<=0)
+        {
+          client.stop();
+          stateMachineHandle = waitingForClient;
+          clientCallTimeOut = clientDisconnectTimeout;
+          Serial.println("Client timeout");
+
+        }
         break;
       }
+      clientCallTimeOut = clientDisconnectTimeout;
 
       //cliente conectado y datos en el buffer
       //Serial.println("Reciving data...");

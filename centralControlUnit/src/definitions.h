@@ -1,9 +1,9 @@
 //Lista de definiciones
 
-
+#define clientDisconnectTimeout 200
 
 //estados de la state machine
-#define stop 0
+#define stopSM 0
 #define calibrate 1
 #define monitorin 2
 #define positionControl 3

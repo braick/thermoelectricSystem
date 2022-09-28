@@ -19,8 +19,8 @@ int getValvePosition()
 }
 
 //motor sensor parameters
-long minSensorValue = 843;  //lectura del punto de maximo cierre de la valvula
-long maxSensorValue = 4277; //lectura del punto de minimo cierre de la valvula
+long minSensorValue = 680;  //lectura del punto de maximo cierre de la valvula
+long maxSensorValue = 4100; //lectura del punto de minimo cierre de la valvula
 
 long minEqPtPWM = 60; //punto de equilibrio en el punto de cierre minimo
 long maxEqPtPWM = 80; //punto de equilibrio en el punto de cierre maximo
@@ -73,20 +73,18 @@ void calibrateValve()
     delay(2000);
     
     float rawminSensorValue = 0;
-    for (size_t i = 0; i < 100; i++)
+    for (size_t i = 0; i < 10; i++)
     {
       rawminSensorValue += getValvePosition();
-      delay(20);
+      delay(500);
     }
-    
-    minSensorValue = (long)(rawminSensorValue /100.0);
-    minSensorValue = (long)((float)minSensorValue * 1.02);
+    minSensorValue = (long)(rawminSensorValue /10.0);
 
+    analogWrite(PWM_pin, 100);
+    delay(500);
     analogWrite(PWM_pin, 50);
     delay(500);
     analogWrite(PWM_pin, 20);
-    delay(500);
-    analogWrite(PWM_pin, 15);
     delay(500);
     analogWrite(PWM_pin, 10);
     delay(500);
@@ -94,13 +92,13 @@ void calibrateValve()
     delay(2000);
 
     float rawmaxSensorValue = 0;
-    for (size_t i = 0; i < 100; i++)
+    for (size_t i = 0; i < 10; i++)
     {
       rawmaxSensorValue += getValvePosition();
-      delay(20);
+      delay(500);
     }
     
-    maxSensorValue = (long)(rawmaxSensorValue /100.0);
+    maxSensorValue = (long)(rawmaxSensorValue /10.0);
     
     //Serial.println(minSensorValue);
     //Serial.println(maxSensorValue);
@@ -125,6 +123,12 @@ void monitorPos()
 {
   long sensorValue =  getValvePosition();
   valvePosition1 = map((long)sensorValue,maxSensorValue,minSensorValue,0,5000);
+  //Serial.print("Min pos calibration: ");
+  //Serial.println(minSensorValue);
+  //Serial.print("Max pos calibration: ");
+  //Serial.println(maxSensorValue);
+  //Serial.print("Actual value: ");
+  //Serial.println(sensorValue);
 }
 /**
  * @brief Funcion de calculo de la accion de control
