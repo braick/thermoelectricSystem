@@ -11,7 +11,7 @@ MCP3208 myADC(10);
 int getValvePosition()
 {
     int value = 0;
-    for (size_t i = 0; i < 4; i++)
+    for (size_t i = 0; i < 8; i++)
     {
       value += myADC.analogRead(i);
     }
@@ -19,8 +19,8 @@ int getValvePosition()
 }
 
 //motor sensor parameters
-long minSensorValue = 680;  //lectura del punto de maximo cierre de la valvula
-long maxSensorValue = 4100; //lectura del punto de minimo cierre de la valvula
+long minSensorValue = 600;  //lectura del punto de maximo cierre de la valvula
+long maxSensorValue = 3350; //lectura del punto de minimo cierre de la valvula
 
 long minEqPtPWM = 60; //punto de equilibrio en el punto de cierre minimo
 long maxEqPtPWM = 80; //punto de equilibrio en el punto de cierre maximo

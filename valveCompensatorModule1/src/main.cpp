@@ -3,8 +3,8 @@
 #include "motorDriverModule.h"
 #include "canBusCom.h"
 
-valveControlSM SM = calibrate;
-bool calibrationFlag = false;
+valveControlSM SM = stop;
+bool calibrationFlag = true;
 unsigned long T1=0, T0=0;
 
 int setPt = 0;

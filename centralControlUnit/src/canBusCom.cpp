@@ -50,7 +50,7 @@ void sendCANMsgToQueue (byte originMod, byte destMod, uint8_t cmd, byte *dataOut
     
     if (sendToFront)
     {
-      xQueueSendToFront(CANCallOutQueue, &canMsg,10);
+      xQueueSendToFront(CANCallOutQueue, &canMsg,100);
     }else
     {
       xQueueSend(CANCallOutQueue,&canMsg,100);
@@ -73,14 +73,20 @@ void CANframeProcess(can_frame canMsg)
   {
     switch (command)
     {
-    case 0x00:
+    case 0x04:
       long valveDataIn;
       memcpy(&valveDataIn,canMsg.data,sizeof(long));
       systemSensorsCAN.valve1Pos = valveDataIn;
       break;
-    case 0xA0:
-      //Serial.println("Valve 1 ok recived");
-      break;
+    case 0x00:
+      Serial.println("Valve 1 stop recived");
+    break;
+    case 0x03:
+      Serial.println("Valve 1 start recived");
+    break;
+    case 0x05:
+      Serial.println("Valve 1 modif. SP recived");
+    break;
     default:
       break;
     }
@@ -140,6 +146,29 @@ void CANframeProcess(can_frame canMsg)
   }
 }
 
+bool canMsgIdMatch(can_frame canR, can_frame canT)
+{
+  //Serial.print("T:");
+  //Serial.println(canT.can_id, HEX);
+  //Serial.print("R:");
+  //Serial.println(canR.can_id, HEX);
+  byte dMod, mID;
+  dMod = (canR.can_id >> 16) & 0xff;
+  mID = canR.can_id & 0xff;
+  if (dMod != ((canT.can_id>>8) & 0xff))
+  {
+    //Serial.println("false 1");
+    return false;
+  }
+  if (mID != (canT.can_id & 0xff))
+  {
+    //Serial.println("false 2");
+    return false;
+  }
+  //Serial.println("true");
+  return true;
+}
+
 
 TaskHandle_t  samplingCallsTaskHandle = NULL;
 TaskHandle_t  canBusComTaskHandle = NULL;
@@ -157,7 +186,7 @@ for (size_t i = 0; i < 255; i++)
 }
 for(;;)
 {
-    if ((mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) && ((canMsgT.can_id>>8 & 0xff) == (canMsgR.can_id>>16 & 0xff))) 
+    if ((mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) && canMsgIdMatch(canMsgR, canMsgT)) 
     {
       callFlag = false;
       //Serial.print("Response module: ");
@@ -178,7 +207,7 @@ for(;;)
           noRespArray[canMsgT.can_id>>8 & 0xff]++;
           if (noRespArray[canMsgT.can_id>>8 & 0xff] <=1)
           {
-            xQueueSend(CANCallOutQueue,&canMsgT,5);
+            xQueueSend(CANCallOutQueue,&canMsgT,100);
           }
         }
       }

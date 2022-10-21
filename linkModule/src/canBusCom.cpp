@@ -1,7 +1,8 @@
 #include "canBusCom.h"
 
 can_frame canMsgR,canMsgT;
-MCP2515 mcp2515(9);
+MCP2515 mcp2515(10);
+byte byteArrayTx[8] = {0x00};
 
 extern int setPt;
 extern valveControlSM SM;
@@ -48,9 +49,6 @@ void configurecanModule()
     mcp2515.reset();
     mcp2515.setConfigMode();
     mcp2515.setBitrate(CAN_125KBPS);
-  
-    mcp2515.setFilterMask(MCP2515::MASK0, true, 0xff00);
-    mcp2515.setFilter(MCP2515::RXF0, true, valveCompDir1<<8);
     mcp2515.setNormalMode();
 
 }
@@ -59,51 +57,24 @@ void getCanMessage()
 {
 if (mcp2515.readMessage(&canMsgR) == MCP2515::ERROR_OK) 
   {
-    //Serial.println("Message recived");
-    uint8_t cmd = canMsgR.can_id & 0xff;
-
-    switch (cmd)
+    byteArrayTx[0] = 0xff;
+    byteArrayTx[1] = (canMsgR.can_id>>16) & 0xff;
+    byteArrayTx[2] = (canMsgR.can_id>>8) & 0xff;
+    byteArrayTx[3] = canMsgR.can_id & 0xff;
+    if (canMsgR.can_dlc >= 4)
     {
-    case stopCMD:
+      memcpy(&byteArrayTx[4], canMsgR.data,4);
+    }
+    else
     {
-      SM = stop;
-      sendCANok(valveCompDir1,CCUDir);
-      break;
+      byteArrayTx[4] = 0;
+      byteArrayTx[5] = 0;
+      byteArrayTx[6] = 0;
+      byteArrayTx[7] = 0;
     }
-    case calibrateCMD:
+    if(Serial.availableForWrite()>7)
     {
-      SM = calibrate;
-      sendCANok(valveCompDir1,CCUDir);
-      break;
-    }
-    case monitorinCMD:
-    { 
-      SM = monitorin;
-      //sendCANok(valveCompDir1,CCUDir);
-      break;
-    }
-    case positionControlCMD:
-    {
-      SM = positionControl;
-      sendCANok(valveCompDir1,CCUDir);
-      break;
-    }
-    case sendPositionCMD:
-    { 
-      sendPos2CAN(valveCompDir1,CCUDir,valvePosition1);
-      
-      break;
-    }
-    case modSetPtCMD:
-    {
-      memcpy(&setPt,canMsgR.data,sizeof(int));
-      sendCANok(valveCompDir1,CCUDir);
-      break;
-    }
-    default:
-    {
-      break;
-    }
+      Serial.write(byteArrayTx,8);
     }
   }
 }
