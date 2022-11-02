@@ -1,6 +1,7 @@
 #include "control.h"
 
-uint8_t systemSMHT = 0, systemSMLT = 0;
+
+uint8_t systemSMHT = 1, systemSMLT = 0;
 
 TaskHandle_t controlTaskHandle = NULL;
 void controlTaskFuntion (void* parameters)

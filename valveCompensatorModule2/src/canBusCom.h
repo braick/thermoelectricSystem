@@ -3,5 +3,5 @@
 
 void configurecanModule();
 void getCanMessage();
-void sendCanMessage(uint32_t canID, byte* message);
-
+void sendPos2CAN (byte originMod, byte destMod, long valvePos);
+void sendCANok(byte originMod, byte destMod);

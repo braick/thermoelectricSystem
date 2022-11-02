@@ -9,8 +9,8 @@ void setup() {
   configurecanModule();
 }
 
-void loop() {
+void loop() 
+{
+  serialRecieve();
   getCanMessage();
-  //Serial.write(buffArray,8);
-  //delay(1);
-  }
+}

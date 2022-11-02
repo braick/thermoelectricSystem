@@ -3,6 +3,15 @@
 	<Property Name="NI.Lib.Icon" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!(]!!!*Q(C=\&gt;7R=2MR%!81N=?"5X&lt;A91P&lt;!FNA#^M#5Y6M96NA"R[WM#WQ"&lt;9A0ZYR'E?G!WPM1$AN&gt;@S(!ZZQG&amp;0%VLZ'@)H8:_X\&lt;^P(^7@8H\4Y;"`NX\;8JZPUX@@MJXC]C.3I6K5S(F/^DHTE)R`ZS%@?]J;XP/5N&lt;XH*3V\SEJ?]Z#F0?=J4HP+5&lt;Y=]Z#%0/&gt;+9@%QU"BU$D-YI-4[':XC':XB]D?%:HO%:HO(2*9:H?):H?)&lt;(&lt;4%]QT-]QT-]BNIEMRVSHO%R@$20]T20]T30+;.Z'K".VA:OAW"%O^B/GK&gt;ZGM&gt;J.%`T.%`T.)`,U4T.UTT.UTROW6;F.]XDE0-9*IKH?)KH?)L(U&amp;%]R6-]R6-]JIPC+:[#+"/7Q2'CX&amp;1[F#`&amp;5TR_2@%54`%54`'YN$WBWF&lt;GI8E==J\E3:\E3:\E-51E4`)E4`)EDW%D?:)H?:)H?5Q6S:-]S:-A;6,42RIMX:A[J3"Z`'S\*&lt;?HV*MENS.C&lt;&gt;Z9GT,7:IOVC7*NDFA00&gt;&lt;$D0719CV_L%7.N6CR&amp;C(7(R=,(1M4;Z*9.T][RNXH46X62:X632X61?X6\H(L8_ZYP^`D&gt;LP&amp;^8K.S_53Z`-Z4K&gt;4()`(/"Q/M&gt;`P9\@&lt;P&lt;U'PDH?8AA`XUMPTP_EXOF`[8`Q&lt;IT0]?OYVOA(5/(_Z!!!!!!</Property>
 	<Property Name="NI.Lib.SourceVersion" Type="Int">553680896</Property>
 	<Property Name="NI.Lib.Version" Type="Str">1.0.0.0</Property>
+	<Item Name="arrayOfSensorData" Type="Variable">
+		<Property Name="featurePacks" Type="Str">Global</Property>
+		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>
+		<Property Name="Network:UseBinding" Type="Str">False</Property>
+		<Property Name="Network:UseBuffering" Type="Str">False</Property>
+		<Property Name="numTypedefs" Type="UInt">0</Property>
+		<Property Name="type" Type="Str">Global</Property>
+		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!&amp;T&lt;Q%!!#%!A!!!!!!/!!^!#1!*6G&amp;M&gt;G61&lt;X-R!!^!#1!*6G&amp;M&gt;G61&lt;X-S!!5!#1!!'E"!!!(`````!!).5(*F=X.V=G6"=H*B?1!91%!!!@````]!!AJ5:7VQ18*S98ES!!!91%!!!@````]!!AJ5:7VQ18*S98ER!!!;1&amp;1!"B*797RW:3!R)&amp;2J&lt;75A5X2B&lt;8!!!"2!6!!'$&amp;2J&lt;75A5X2B&lt;8!A-A!!*%"!!!(`````!!=86'6N=#!S)%&amp;S=G&amp;Z)&amp;2J&lt;75A5X2B&lt;8!!*%"!!!(`````!!=86'6N=#!R)%&amp;S=G&amp;Z)&amp;2J&lt;75A5X2B&lt;8!!'E"5!!936G&amp;M&gt;G5A-C"5;7VF)&amp;.U97VQ!!!E1%!!!@````]!"R:1=G6T=S""=H*B?3"5;7VF)&amp;.U97VQ!!!C1&amp;!!#A!!!!%!!Q!%!!5!"A!)!!E!#A!,"U.M&gt;8.U:8)!'%"!!!(`````!!Q,5W6O=W^S=U2B&gt;'%!!1!.!!!!!!!!!!!!!!!!</Property>
+	</Item>
 	<Item Name="conexStat" Type="Variable">
 		<Property Name="featurePacks" Type="Str">Global</Property>
 		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>
@@ -11,6 +20,15 @@
 		<Property Name="numTypedefs" Type="UInt">0</Property>
 		<Property Name="type" Type="Str">Global</Property>
 		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!".31!!!#%!A!!!!!!"!$&gt;!&amp;A!%$%2J=W.P&lt;GZF9X2F:!J$&lt;WZO:7.U;7ZH#%.P&lt;G6D&gt;'6E"V.F&lt;G2J&lt;G=!!!2&amp;&lt;H6N!!!"!!!!!1!!!!!!!!!!</Property>
+	</Item>
+	<Item Name="localSensorDataVar" Type="Variable">
+		<Property Name="featurePacks" Type="Str">Global</Property>
+		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>
+		<Property Name="Network:UseBinding" Type="Str">False</Property>
+		<Property Name="Network:UseBuffering" Type="Str">False</Property>
+		<Property Name="numTypedefs" Type="UInt">0</Property>
+		<Property Name="type" Type="Str">Global</Property>
+		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!'8EQ%!!#%!A!!!!!!.!!^!#1!*6G&amp;M&gt;G61&lt;X-R!!^!#1!*6G&amp;M&gt;G61&lt;X-S!!5!#1!!'E"!!!(`````!!).5(*F=X.V=G6"=H*B?1!91%!!!@````]!!AJ5:7VQ18*S98ES!!!91%!!!@````]!!AJ5:7VQ18*S98ER!!!;1&amp;1!"B*797RW:3!R)&amp;2J&lt;75A5X2B&lt;8!!!"2!6!!'$&amp;2J&lt;75A5X2B&lt;8!A-A!!*%"!!!(`````!!=86'6N=#!S)%&amp;S=G&amp;Z)&amp;2J&lt;75A5X2B&lt;8!!*%"!!!(`````!!=86'6N=#!R)%&amp;S=G&amp;Z)&amp;2J&lt;75A5X2B&lt;8!!'E"5!!936G&amp;M&gt;G5A-C"5;7VF)&amp;.U97VQ!!!E1%!!!@````]!"R:1=G6T=S""=H*B?3"5;7VF)&amp;.U97VQ!!!C1&amp;!!#A!!!!%!!Q!%!!5!"A!)!!E!#A!,"U.M&gt;8.U:8)!!1!-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</Property>
 	</Item>
 	<Item Name="loopsStop" Type="Variable">
 		<Property Name="featurePacks" Type="Str">Global</Property>

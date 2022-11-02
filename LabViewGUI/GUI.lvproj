@@ -3,7 +3,9 @@
 	<Property Name="varPersistentID:{1887FF1B-6045-47A5-94A1-C3E30B9F42A3}" Type="Ref">/My Computer/globalVars.lvlib/state</Property>
 	<Property Name="varPersistentID:{248A6C00-CC0A-4B9F-87E6-9EA84FF91C3C}" Type="Ref">/My Computer/globalVars.lvlib/systemStatus</Property>
 	<Property Name="varPersistentID:{2C595DA2-D28F-46DC-8ECB-26B3A332A0AD}" Type="Ref">/My Computer/globalVars.lvlib/press</Property>
+	<Property Name="varPersistentID:{3BB854CD-5BAE-43B9-BDF0-F7CCF6160EA0}" Type="Ref">/My Computer/globalVars.lvlib/localSensorDataVar</Property>
 	<Property Name="varPersistentID:{62E55119-BD7E-48CF-9E97-DE38A7BC701D}" Type="Ref">/My Computer/globalVars.lvlib/sensDt</Property>
+	<Property Name="varPersistentID:{7852144A-1C37-4B7D-914B-3D82CB20BA08}" Type="Ref">/My Computer/globalVars.lvlib/arrayOfSensorData</Property>
 	<Property Name="varPersistentID:{8B84199B-D890-45B4-89CF-E0B2B27F5B7C}" Type="Ref">/My Computer/globalVars.lvlib/loopsStop</Property>
 	<Property Name="varPersistentID:{BDC80308-6EA7-438D-A016-9753B8F35872}" Type="Ref">/My Computer/globalVars.lvlib/conexStat</Property>
 	<Property Name="varPersistentID:{D140D339-AE5A-402F-B5C2-55CA1D6C5BE2}" Type="Ref">/My Computer/globalVars.lvlib/saveData</Property>
@@ -26,11 +28,15 @@
 		<Item Name="linFit.vi" Type="VI" URL="../linFit.vi"/>
 		<Item Name="linFitArrayPress.vi" Type="VI" URL="../linFitArrayPress.vi"/>
 		<Item Name="main.vi" Type="VI" URL="../main.vi"/>
+		<Item Name="pressSensorLin.vi" Type="VI" URL="../pressSensorLin.vi"/>
+		<Item Name="processCanFrame.vi" Type="VI" URL="../processCanFrame.vi"/>
 		<Item Name="saveSensorsData.vi" Type="VI" URL="../saveSensorsData.vi"/>
 		<Item Name="sesnorData.ctl" Type="VI" URL="../sesnorData.ctl"/>
+		<Item Name="systemsResponseStatus.vi" Type="VI" URL="../systemsResponseStatus.vi"/>
 		<Item Name="TCPFrameProc.vi" Type="VI" URL="../TCPFrameProc.vi"/>
-		<Item Name="TEG_info_show.vi" Type="VI" URL="../TEG_info_show.vi"/>
-		<Item Name="Untitled 1.vi" Type="VI" URL="../../../../Documents/Untitled 1.vi"/>
+		<Item Name="TEG_info_show.vi" Type="VI" URL="../../thermoelectricSystem/LabViewGUI/TEG_info_show.vi"/>
+		<Item Name="tempSensorProcs.vi" Type="VI" URL="../tempSensorProcs.vi"/>
+		<Item Name="valveDataProc.vi" Type="VI" URL="../valveDataProc.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
@@ -69,6 +75,9 @@
 				<Item Name="Three Button Dialog CORE.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Three Button Dialog CORE.vi"/>
 				<Item Name="Three Button Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Three Button Dialog.vi"/>
 				<Item Name="Trim Whitespace.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Trim Whitespace.vi"/>
+				<Item Name="VISA Configure Serial Port" Type="VI" URL="/&lt;vilib&gt;/Instr/_visa.llb/VISA Configure Serial Port"/>
+				<Item Name="VISA Configure Serial Port (Instr).vi" Type="VI" URL="/&lt;vilib&gt;/Instr/_visa.llb/VISA Configure Serial Port (Instr).vi"/>
+				<Item Name="VISA Configure Serial Port (Serial Instr).vi" Type="VI" URL="/&lt;vilib&gt;/Instr/_visa.llb/VISA Configure Serial Port (Serial Instr).vi"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 				<Item Name="Write Delimited Spreadsheet (DBL).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Write Delimited Spreadsheet (DBL).vi"/>
 				<Item Name="Write Delimited Spreadsheet (I64).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Write Delimited Spreadsheet (I64).vi"/>

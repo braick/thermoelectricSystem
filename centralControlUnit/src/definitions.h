@@ -19,6 +19,7 @@
 #define pressureModDir 0xB1
 #define tempModDir1 0xC1
 #define tempModDir2 0xC2
+#define linkDir 0x00
 
 //comandos modulo de la valvula
 

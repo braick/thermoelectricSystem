@@ -3,7 +3,7 @@
 #include "motorDriverModule.h"
 #include "canBusCom.h"
 
-valveControlSM SM = calibrate;
+valveControlSM SM = stop;
 bool calibrationFlag = true;
 unsigned long T1=0, T0=0;
 
@@ -11,7 +11,7 @@ int setPt = 0;
 long sensorV = 0;
 void setup() 
 {
-  //Serial.begin(9600);
+  Serial.begin(9600);
   configurecanModule();
   configureDriverOutputs();
   //configureDriverModule();
@@ -28,6 +28,10 @@ void loop()
   {
     setPt = 0;
     openValve();
+    if (calibrationFlag)
+    {
+      monitorPos();
+    }
     break;
   }
   case calibrate:
@@ -35,10 +39,6 @@ void loop()
     calibrateValve();
     calibrationFlag = true;
     SM=stop;
-    break;
-  }
-  case monitorin:
-  {
     break;
   }
   case positionControl:
@@ -62,7 +62,9 @@ void loop()
     break;
   }
   default:
-    SM = stop;
+  {
+    //SM = stop;
     break;
+  }
   }
 }

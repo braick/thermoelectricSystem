@@ -11,16 +11,19 @@ MCP3208 myADC(10);
 int getValvePosition()
 {
     int value = 0;
+    value = myADC.analogRead(0);
+    /*
     for (size_t i = 0; i < 8; i++)
     {
       value += myADC.analogRead(i);
     }
-    return value/8;
+    */
+    return value;
 }
 
 //motor sensor parameters
-long minSensorValue = 600;  //lectura del punto de maximo cierre de la valvula
-long maxSensorValue = 3350; //lectura del punto de minimo cierre de la valvula
+long minSensorValue = 587;  //lectura del punto de maximo cierre de la valvula
+long maxSensorValue = 3527; //lectura del punto de minimo cierre de la valvula
 
 long minEqPtPWM = 60; //punto de equilibrio en el punto de cierre minimo
 long maxEqPtPWM = 80; //punto de equilibrio en el punto de cierre maximo
@@ -79,6 +82,8 @@ void calibrateValve()
       delay(500);
     }
     minSensorValue = (long)(rawminSensorValue /10.0);
+    Serial.print("MIN val: ");
+    Serial.println(minSensorValue);
 
     analogWrite(PWM_pin, 100);
     delay(500);
@@ -99,6 +104,8 @@ void calibrateValve()
     }
     
     maxSensorValue = (long)(rawmaxSensorValue /10.0);
+    Serial.print("MAX val: ");
+    Serial.println(maxSensorValue);
     
     //Serial.println(minSensorValue);
     //Serial.println(maxSensorValue);
