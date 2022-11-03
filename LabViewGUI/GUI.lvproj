@@ -8,6 +8,7 @@
 	<Property Name="varPersistentID:{7852144A-1C37-4B7D-914B-3D82CB20BA08}" Type="Ref">/My Computer/globalVars.lvlib/arrayOfSensorData</Property>
 	<Property Name="varPersistentID:{8B84199B-D890-45B4-89CF-E0B2B27F5B7C}" Type="Ref">/My Computer/globalVars.lvlib/loopsStop</Property>
 	<Property Name="varPersistentID:{BDC80308-6EA7-438D-A016-9753B8F35872}" Type="Ref">/My Computer/globalVars.lvlib/conexStat</Property>
+	<Property Name="varPersistentID:{C78BD28B-F416-4A0C-9F2B-9B409478228D}" Type="Ref">/My Computer/globalVars.lvlib/linkConexStatus</Property>
 	<Property Name="varPersistentID:{D140D339-AE5A-402F-B5C2-55CA1D6C5BE2}" Type="Ref">/My Computer/globalVars.lvlib/saveData</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
@@ -27,6 +28,7 @@
 		<Item Name="globalVars.lvlib" Type="Library" URL="../globalVars.lvlib"/>
 		<Item Name="linFit.vi" Type="VI" URL="../linFit.vi"/>
 		<Item Name="linFitArrayPress.vi" Type="VI" URL="../linFitArrayPress.vi"/>
+		<Item Name="linkConexionStatus.ctl" Type="VI" URL="../linkConexionStatus.ctl"/>
 		<Item Name="main.vi" Type="VI" URL="../main.vi"/>
 		<Item Name="pressSensorLin.vi" Type="VI" URL="../pressSensorLin.vi"/>
 		<Item Name="processCanFrame.vi" Type="VI" URL="../processCanFrame.vi"/>
@@ -34,7 +36,7 @@
 		<Item Name="sesnorData.ctl" Type="VI" URL="../sesnorData.ctl"/>
 		<Item Name="systemsResponseStatus.vi" Type="VI" URL="../systemsResponseStatus.vi"/>
 		<Item Name="TCPFrameProc.vi" Type="VI" URL="../TCPFrameProc.vi"/>
-		<Item Name="TEG_info_show.vi" Type="VI" URL="../../thermoelectricSystem/LabViewGUI/TEG_info_show.vi"/>
+		<Item Name="TEG_info_show.vi" Type="VI" URL="../TEG_info_show.vi"/>
 		<Item Name="tempSensorProcs.vi" Type="VI" URL="../tempSensorProcs.vi"/>
 		<Item Name="valveDataProc.vi" Type="VI" URL="../valveDataProc.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
@@ -86,6 +88,120 @@
 				<Item Name="Write Spreadsheet String.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/file.llb/Write Spreadsheet String.vi"/>
 			</Item>
 		</Item>
-		<Item Name="Build Specifications" Type="Build"/>
+		<Item Name="Build Specifications" Type="Build">
+			<Item Name="TEGSystemGUI" Type="EXE">
+				<Property Name="App_copyErrors" Type="Bool">true</Property>
+				<Property Name="App_INI_aliasGUID" Type="Str">{27DD7A01-0C97-40A4-8C27-C72DE8D6D823}</Property>
+				<Property Name="App_INI_GUID" Type="Str">{69081418-1608-4A64-A56A-7897196A0D9E}</Property>
+				<Property Name="App_serverConfig.httpPort" Type="Int">8002</Property>
+				<Property Name="App_serverType" Type="Int">0</Property>
+				<Property Name="Bld_autoIncrement" Type="Bool">true</Property>
+				<Property Name="Bld_buildCacheID" Type="Str">{7B7CC902-CE75-4EC7-A5BC-9EC32BB4A081}</Property>
+				<Property Name="Bld_buildSpecName" Type="Str">TEGSystemGUI</Property>
+				<Property Name="Bld_excludeInlineSubVIs" Type="Bool">true</Property>
+				<Property Name="Bld_excludeLibraryItems" Type="Bool">true</Property>
+				<Property Name="Bld_excludePolymorphicVIs" Type="Bool">true</Property>
+				<Property Name="Bld_localDestDir" Type="Path">../builds/NI_AB_PROJECTNAME/TEGSystemGUI</Property>
+				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
+				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
+				<Property Name="Bld_previewCacheID" Type="Str">{CC4671BF-7527-49B1-B149-5C46A42988E3}</Property>
+				<Property Name="Bld_version.build" Type="Int">6</Property>
+				<Property Name="Bld_version.major" Type="Int">1</Property>
+				<Property Name="Destination[0].destName" Type="Str">TEGSystemGUI.exe</Property>
+				<Property Name="Destination[0].path" Type="Path">../builds/NI_AB_PROJECTNAME/TEGSystemGUI/TEGSystemGUI.exe</Property>
+				<Property Name="Destination[0].preserveHierarchy" Type="Bool">true</Property>
+				<Property Name="Destination[0].type" Type="Str">App</Property>
+				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
+				<Property Name="Destination[1].path" Type="Path">../builds/NI_AB_PROJECTNAME/TEGSystemGUI/data</Property>
+				<Property Name="DestinationCount" Type="Int">2</Property>
+				<Property Name="Source[0].itemID" Type="Str">{9EADA433-7EB9-4A1B-B399-813412651065}</Property>
+				<Property Name="Source[0].type" Type="Str">Container</Property>
+				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/main.vi</Property>
+				<Property Name="Source[1].sourceInclusion" Type="Str">TopLevel</Property>
+				<Property Name="Source[1].type" Type="Str">VI</Property>
+				<Property Name="Source[10].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[10].itemID" Type="Ref">/My Computer/linkConexionStatus.ctl</Property>
+				<Property Name="Source[10].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[10].type" Type="Str">VI</Property>
+				<Property Name="Source[11].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[11].itemID" Type="Ref">/My Computer/pressSensorLin.vi</Property>
+				<Property Name="Source[11].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[11].type" Type="Str">VI</Property>
+				<Property Name="Source[12].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[12].itemID" Type="Ref">/My Computer/processCanFrame.vi</Property>
+				<Property Name="Source[12].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[12].type" Type="Str">VI</Property>
+				<Property Name="Source[13].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[13].itemID" Type="Ref">/My Computer/saveSensorsData.vi</Property>
+				<Property Name="Source[13].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[13].type" Type="Str">VI</Property>
+				<Property Name="Source[14].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[14].itemID" Type="Ref">/My Computer/sesnorData.ctl</Property>
+				<Property Name="Source[14].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[14].type" Type="Str">VI</Property>
+				<Property Name="Source[15].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[15].itemID" Type="Ref">/My Computer/systemsResponseStatus.vi</Property>
+				<Property Name="Source[15].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[15].type" Type="Str">VI</Property>
+				<Property Name="Source[16].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[16].itemID" Type="Ref">/My Computer/TCPFrameProc.vi</Property>
+				<Property Name="Source[16].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[16].type" Type="Str">VI</Property>
+				<Property Name="Source[17].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[17].itemID" Type="Ref">/My Computer/TEG_info_show.vi</Property>
+				<Property Name="Source[17].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[17].type" Type="Str">VI</Property>
+				<Property Name="Source[18].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[18].itemID" Type="Ref">/My Computer/tempSensorProcs.vi</Property>
+				<Property Name="Source[18].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[18].type" Type="Str">VI</Property>
+				<Property Name="Source[19].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[19].itemID" Type="Ref">/My Computer/valveDataProc.vi</Property>
+				<Property Name="Source[19].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[19].type" Type="Str">VI</Property>
+				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[2].itemID" Type="Ref">/My Computer/callResponse.vi</Property>
+				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[2].type" Type="Str">VI</Property>
+				<Property Name="Source[3].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[3].itemID" Type="Ref">/My Computer/CANFrame2SensorValVI.vi</Property>
+				<Property Name="Source[3].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[3].type" Type="Str">VI</Property>
+				<Property Name="Source[4].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[4].itemID" Type="Ref">/My Computer/conexStatCont.ctl</Property>
+				<Property Name="Source[4].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[4].type" Type="Str">VI</Property>
+				<Property Name="Source[5].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[5].itemID" Type="Ref">/My Computer/controlSystemStatus.ctl</Property>
+				<Property Name="Source[5].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[5].type" Type="Str">VI</Property>
+				<Property Name="Source[6].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[6].itemID" Type="Ref">/My Computer/fullPath.vi</Property>
+				<Property Name="Source[6].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[6].type" Type="Str">VI</Property>
+				<Property Name="Source[7].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[7].itemID" Type="Ref">/My Computer/globalVars.lvlib</Property>
+				<Property Name="Source[7].Library.allowMissingMembers" Type="Bool">true</Property>
+				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[7].type" Type="Str">Library</Property>
+				<Property Name="Source[8].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[8].itemID" Type="Ref">/My Computer/linFit.vi</Property>
+				<Property Name="Source[8].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[8].type" Type="Str">VI</Property>
+				<Property Name="Source[9].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[9].itemID" Type="Ref">/My Computer/linFitArrayPress.vi</Property>
+				<Property Name="Source[9].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[9].type" Type="Str">VI</Property>
+				<Property Name="SourceCount" Type="Int">20</Property>
+				<Property Name="TgtF_fileDescription" Type="Str">TEGSystemGUI</Property>
+				<Property Name="TgtF_internalName" Type="Str">TEGSystemGUI</Property>
+				<Property Name="TgtF_legalCopyright" Type="Str">Copyright © 2022 </Property>
+				<Property Name="TgtF_productName" Type="Str">TEGSystemGUI</Property>
+				<Property Name="TgtF_targetfileGUID" Type="Str">{E06B1D31-25D8-4A7D-9F53-42DB4B3B1506}</Property>
+				<Property Name="TgtF_targetfileName" Type="Str">TEGSystemGUI.exe</Property>
+				<Property Name="TgtF_versionIndependent" Type="Bool">true</Property>
+			</Item>
+		</Item>
 	</Item>
 </Project>

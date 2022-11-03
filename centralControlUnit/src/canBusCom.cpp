@@ -4,9 +4,8 @@
 struct can_frame canMsgR, canMsgT;
 MCP2515 mcp2515(5);
 
-int command = 0;
 SystemSensors systemSensorsCAN, auxSensor;
-extern QueueHandle_t systemSensorsQueue;
+QueueHandle_t systemSensorsQueue = xQueueCreate(1,sizeof(systemSensorsCAN));
 uint8_t noRespArray [255] = {0};
 
 QueueHandle_t CANCallOutQueue = xQueueCreate(50,sizeof(canMsgT));
@@ -73,8 +72,8 @@ void CANframeProcess(can_frame canMsg)
 
   canCheck = canMsg.can_id>>24 & 0xff;
   origMod = canMsg.can_id>>16 & 0xff;
-  command = canMsg.can_id & 0xff;
-  //Serial.println(command,HEX);
+  comand = canMsg.can_id & 0xff;
+  //Serial.println(comand,HEX);
   if (canCheck!=0x80)
   {
     return;
@@ -88,7 +87,7 @@ void CANframeProcess(can_frame canMsg)
   }
   case valveCompDir1:
   {
-    switch (command)
+    switch (comand)
     {
     case 0x04:
       long valveDataIn;
@@ -112,7 +111,7 @@ void CANframeProcess(can_frame canMsg)
   }
   case valveCompDir2:
   {
-    switch (command)
+    switch (comand)
     {
     case 0x04:
       long valveDataIn;
@@ -137,21 +136,21 @@ void CANframeProcess(can_frame canMsg)
   {
     float pressDataIn = 0;
     memcpy(&pressDataIn, canMsg.data,sizeof(float));
-    systemSensorsCAN.pressureArray[command] = pressDataIn;
+    systemSensorsCAN.pressureArray[comand] = pressDataIn;
     break;
   }
   case tempModDir1:
   {
     float tempDataIn = 0;
     memcpy(&tempDataIn, canMsg.data,sizeof(float));
-    systemSensorsCAN.tempArrayMod1[command] = tempDataIn;
+    systemSensorsCAN.tempArrayMod1[comand] = tempDataIn;
     break;
   }
   case tempModDir2:
   {
     float tempDataIn = 0;
     memcpy(&tempDataIn, canMsg.data,sizeof(float));
-    systemSensorsCAN.tempArrayMod2[command] = tempDataIn;
+    systemSensorsCAN.tempArrayMod2[comand] = tempDataIn;
     break;
   }
   default:

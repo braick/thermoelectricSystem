@@ -21,6 +21,15 @@
 		<Property Name="type" Type="Str">Global</Property>
 		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!".31!!!#%!A!!!!!!"!$&gt;!&amp;A!%$%2J=W.P&lt;GZF9X2F:!J$&lt;WZO:7.U;7ZH#%.P&lt;G6D&gt;'6E"V.F&lt;G2J&lt;G=!!!2&amp;&lt;H6N!!!"!!!!!1!!!!!!!!!!</Property>
 	</Item>
+	<Item Name="linkConexStatus" Type="Variable">
+		<Property Name="featurePacks" Type="Str">Global</Property>
+		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>
+		<Property Name="Network:UseBinding" Type="Str">False</Property>
+		<Property Name="Network:UseBuffering" Type="Str">False</Property>
+		<Property Name="numTypedefs" Type="UInt">0</Property>
+		<Property Name="type" Type="Str">Global</Property>
+		<Property Name="typeDesc" Type="Bin">)1#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!"$0Q!!!#%!A!!!!!!"!#V!&amp;A!%"H6O9W^O&lt;ABS:7.J&gt;GFO:Q&gt;E;8.D&lt;WZO"X&gt;B;82J&lt;G=!"%6O&gt;7U!!!%!!!!!!!!!!!!!!!!</Property>
+	</Item>
 	<Item Name="localSensorDataVar" Type="Variable">
 		<Property Name="featurePacks" Type="Str">Global</Property>
 		<Property Name="Global:EnableTimestamp" Type="Str">False</Property>

@@ -2,18 +2,6 @@
 #include <Arduino.h>
 void intializeTasks1()
 {
-  /*
-  extern TaskHandle_t  communicationTaskHandle;
-  xTaskCreatePinnedToCore(
-  communication, 
-  "tarea de comunicaciones TCP ", 
-  10000, 
-  NULL, 
-  1, 
-  &communicationTaskHandle, 
-  1 
-  );
-  */
   extern TaskHandle_t  canBusComTaskHandle;
   xTaskCreatePinnedToCore(
   canBusTask, 

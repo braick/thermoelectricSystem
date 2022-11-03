@@ -1,8 +1,9 @@
 #include "control.h"
 
+extern SystemSensors systemSensorsCAN;
+extern QueueHandle_t systemSensorsQueue;
 
-uint8_t systemSMHT = 1, systemSMLT = 0;
-
+uint8_t systemControlSM = valsOn;
 TaskHandle_t controlTaskHandle = NULL;
 void controlTaskFuntion (void* parameters)
 {
@@ -22,25 +23,37 @@ void controlTaskFuntion (void* parameters)
     Serial.println("outuputs configured");
     for (;;)
     {   
-        //Serial.print("control state:");
-        //Serial.println(systemSMHT);
-        switch (systemSMHT)
+        switch (systemControlSM)
         {
-        case 0:
+        case allOFF:
         {
             digitalWrite(valve1RelayGPIO, HIGH);
             digitalWrite(valve2RelayGPIO, HIGH);
             digitalWrite(alarmRelayGPIO, HIGH);
             break;
         }
-        case 1:
+        case valsOn:
         {
             digitalWrite(valve1RelayGPIO, LOW);
             digitalWrite(valve2RelayGPIO, LOW);
             digitalWrite(alarmRelayGPIO, HIGH);
             break;
         }
-        case 2:
+        case val1Off:
+        {
+            digitalWrite(valve1RelayGPIO, HIGH);
+            digitalWrite(valve2RelayGPIO, LOW);
+            digitalWrite(alarmRelayGPIO, LOW);
+            break;
+        }
+        case val2Off:
+        {
+            digitalWrite(valve1RelayGPIO, LOW);
+            digitalWrite(valve2RelayGPIO, HIGH);
+            digitalWrite(alarmRelayGPIO, LOW);
+            break;
+        }
+        case valsOff:
         {
             digitalWrite(valve1RelayGPIO, HIGH);
             digitalWrite(valve2RelayGPIO, HIGH);
@@ -52,10 +65,9 @@ void controlTaskFuntion (void* parameters)
             digitalWrite(valve1RelayGPIO, HIGH);
             digitalWrite(valve2RelayGPIO, HIGH);
             digitalWrite(alarmRelayGPIO, HIGH);
-            Serial.println("default state");
             break;
         }
-        }
+        }   
         vTaskDelayUntil( &xLastWakeTime, xFrequency );
     }
     
